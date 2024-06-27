@@ -8,8 +8,8 @@ import { toast } from "sonner";
 
 const Index = () => {
   const [transactions, setTransactions] = useState([
-    { id: 1, date: new Date(), amount: 200, type: "income", brand: "Nike" },
-    { id: 2, date: new Date(), amount: 150, type: "expense", brand: "Adidas" },
+    { id: 1, date: new Date(), amount: 200, type: "income", brand: "Nike", model: "Air Max" },
+    { id: 2, date: new Date(), amount: 150, type: "expense", brand: "Adidas", model: "Ultra Boost" },
   ]);
 
   const [newTransaction, setNewTransaction] = useState({
@@ -17,6 +17,7 @@ const Index = () => {
     amount: "",
     type: "income",
     brand: "Nike",
+    model: "",
   });
 
   const [filter, setFilter] = useState("all");
@@ -93,6 +94,14 @@ const Index = () => {
                 <SelectItem value="Reebok">Reebok</SelectItem>
               </SelectContent>
             </Select>
+            <Input
+              type="text"
+              placeholder="Model"
+              value={newTransaction.model}
+              onChange={(e) =>
+                setNewTransaction({ ...newTransaction, model: e.target.value })
+              }
+            />
             <Button onClick={handleAddTransaction}>Add Transaction</Button>
           </div>
         </CardContent>
@@ -124,6 +133,7 @@ const Index = () => {
                   <TableHead>Amount</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Brand</TableHead>
+                  <TableHead>Model</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -134,6 +144,7 @@ const Index = () => {
                     <TableCell>{transaction.amount}</TableCell>
                     <TableCell>{transaction.type}</TableCell>
                     <TableCell>{transaction.brand}</TableCell>
+                    <TableCell>{transaction.model}</TableCell>
                     <TableCell>
                       <Button
                         variant="outline"
