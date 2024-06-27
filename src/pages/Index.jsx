@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
 
@@ -20,6 +19,8 @@ const Index = () => {
     brand: "Nike",
   });
 
+  const [filter, setFilter] = useState("all");
+
   const handleAddTransaction = () => {
     setTransactions([
       ...transactions,
@@ -32,6 +33,11 @@ const Index = () => {
     setTransactions(transactions.filter((transaction) => transaction.id !== id));
     toast("Transaction deleted successfully.");
   };
+
+  const filteredTransactions = transactions.filter((transaction) => {
+    if (filter === "all") return true;
+    return transaction.type === filter;
+  });
 
   return (
     <div className="p-4">
@@ -98,6 +104,19 @@ const Index = () => {
             <CardTitle>Transactions</CardTitle>
           </CardHeader>
           <CardContent>
+            <Select
+              value={filter}
+              onValueChange={(value) => setFilter(value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Filter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="income">Income</SelectItem>
+                <SelectItem value="expense">Expense</SelectItem>
+              </SelectContent>
+            </Select>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -109,7 +128,7 @@ const Index = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {transactions.map((transaction) => (
+                {filteredTransactions.map((transaction) => (
                   <TableRow key={transaction.id}>
                     <TableCell>{transaction.date.toDateString()}</TableCell>
                     <TableCell>{transaction.amount}</TableCell>
